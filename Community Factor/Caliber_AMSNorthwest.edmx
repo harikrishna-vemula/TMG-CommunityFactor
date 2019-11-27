@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Caliber_AMSNorthwestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DivisionID" Type="int" />
+          <Property Name="ShowInTreeview" Type="bit" />
+          <Property Name="ClientName" Type="nvarchar" MaxLength="200" />
+          <Property Name="LegalName" Type="nvarchar" MaxLength="250" />
+          <Property Name="ClientCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="ClientType" Type="int" />
+          <Property Name="ManagerID" Type="int" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="ParentType" Type="int" />
+          <Property Name="EIN" Type="nvarchar" MaxLength="255" />
+          <Property Name="ARBasis" Type="int" />
+          <Property Name="APBasis" Type="int" />
+          <Property Name="APGLAccountID" Type="int" />
+          <Property Name="FYStartMonth" Type="int" />
+          <Property Name="LastPaymentGLAccountID" Type="int" />
+          <Property Name="StatementLayoutID" Type="int" />
+          <Property Name="UseDefaultStatementSettings" Type="bit" />
+          <Property Name="CombineTAccts" Type="bit" />
+          <Property Name="GroupSubTotal" Type="bit" />
+          <Property Name="ZeroBalanceStatements" Type="bit" />
+          <Property Name="ACHStatements" Type="bit" />
+          <Property Name="StatementNote" Type="nvarchar(max)" />
+          <Property Name="StatementFrequency" Type="int" />
+          <Property Name="StatementDay" Type="int" />
+          <Property Name="StatementLateDays" Type="int" />
+          <Property Name="StatementLateFee" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CostCenters" Type="bit" />
+          <Property Name="ForceBudgetedGL" Type="int" />
+          <Property Name="NPComplianceID" Type="int" />
+          <Property Name="NPDelinquencyID" Type="int" />
+          <Property Name="xID" Type="int" />
+          <Property Name="RetainedEarningsGLAccountID" Type="int" />
+          <Property Name="UsePriorAccountNumbers" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="LastModified" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="CollectionPolicy" Type="nvarchar(max)" />
+          <Property Name="AppliedPaymentSortType" Type="int" />
+          <Property Name="Active" Type="nvarchar" MaxLength="100" />
+          <Property Name="AccountNumbersRun" Type="bit" />
+          <Property Name="IsTrainingClient" Type="bit" />
+          <Property Name="WorkingCapital" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="UseCaliberWeb" Type="bit" />
+          <Property Name="EnableCentralDisbursing" Type="bit" />
+          <Property Name="LastPaymentCCID" Type="int" />
+          <Property Name="StatementLateFeePercentage" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="StatementLateFeeType" Type="tinyint" />
+          <Property Name="UseSpecifiedRemitAddress" Type="bit" />
+          <Property Name="ReserveRetainedEarningsGLAccountID" Type="int" />
+          <Property Name="InActive" Type="bit" />
+          <Property Name="ACHDescription" Type="nvarchar" MaxLength="10" />
+          <Property Name="MaxUnits" Type="int" />
+          <Property Name="APGLSetting" Type="nvarchar" MaxLength="5" />
+          <Property Name="MainModule" Type="int" />
+          <Property Name="iColligoAssociationID" Type="int" />
+          <Property Name="iColligoAuthCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="OverrideDefaultWOTemplate" Type="bit" />
+          <Property Name="OverrideTemplateID" Type="int" />
+        </EntityType>
+        <EntityContainer Name="Caliber_AMSNorthwestModelStoreContainer">
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Caliber_AMSNorthwestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="ClientID" />
+          </Key>
+          <Property Name="ClientID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DivisionID" Type="Int32" />
+          <Property Name="ShowInTreeview" Type="Boolean" />
+          <Property Name="ClientName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="LegalName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ClientCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ClientType" Type="Int32" />
+          <Property Name="ManagerID" Type="Int32" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="ParentType" Type="Int32" />
+          <Property Name="EIN" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ARBasis" Type="Int32" />
+          <Property Name="APBasis" Type="Int32" />
+          <Property Name="APGLAccountID" Type="Int32" />
+          <Property Name="FYStartMonth" Type="Int32" />
+          <Property Name="LastPaymentGLAccountID" Type="Int32" />
+          <Property Name="StatementLayoutID" Type="Int32" />
+          <Property Name="UseDefaultStatementSettings" Type="Boolean" />
+          <Property Name="CombineTAccts" Type="Boolean" />
+          <Property Name="GroupSubTotal" Type="Boolean" />
+          <Property Name="ZeroBalanceStatements" Type="Boolean" />
+          <Property Name="ACHStatements" Type="Boolean" />
+          <Property Name="StatementNote" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatementFrequency" Type="Int32" />
+          <Property Name="StatementDay" Type="Int32" />
+          <Property Name="StatementLateDays" Type="Int32" />
+          <Property Name="StatementLateFee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CostCenters" Type="Boolean" />
+          <Property Name="ForceBudgetedGL" Type="Int32" />
+          <Property Name="NPComplianceID" Type="Int32" />
+          <Property Name="NPDelinquencyID" Type="Int32" />
+          <Property Name="xID" Type="Int32" />
+          <Property Name="RetainedEarningsGLAccountID" Type="Int32" />
+          <Property Name="UsePriorAccountNumbers" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="LastModified" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="CollectionPolicy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AppliedPaymentSortType" Type="Int32" />
+          <Property Name="Active" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccountNumbersRun" Type="Boolean" />
+          <Property Name="IsTrainingClient" Type="Boolean" />
+          <Property Name="WorkingCapital" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UseCaliberWeb" Type="Boolean" />
+          <Property Name="EnableCentralDisbursing" Type="Boolean" />
+          <Property Name="LastPaymentCCID" Type="Int32" />
+          <Property Name="StatementLateFeePercentage" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="StatementLateFeeType" Type="Byte" />
+          <Property Name="UseSpecifiedRemitAddress" Type="Boolean" />
+          <Property Name="ReserveRetainedEarningsGLAccountID" Type="Int32" />
+          <Property Name="InActive" Type="Boolean" />
+          <Property Name="ACHDescription" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MaxUnits" Type="Int32" />
+          <Property Name="APGLSetting" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="MainModule" Type="Int32" />
+          <Property Name="iColligoAssociationID" Type="Int32" />
+          <Property Name="iColligoAuthCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OverrideDefaultWOTemplate" Type="Boolean" />
+          <Property Name="OverrideTemplateID" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="Caliber_AMSNorthwestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Caliber_AMSNorthwestModelStoreContainer" CdmEntityContainer="Caliber_AMSNorthwestEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="Caliber_AMSNorthwestModel.Client">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="DivisionID" ColumnName="DivisionID" />
+                <ScalarProperty Name="ShowInTreeview" ColumnName="ShowInTreeview" />
+                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="LegalName" ColumnName="LegalName" />
+                <ScalarProperty Name="ClientCode" ColumnName="ClientCode" />
+                <ScalarProperty Name="ClientType" ColumnName="ClientType" />
+                <ScalarProperty Name="ManagerID" ColumnName="ManagerID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="ParentType" ColumnName="ParentType" />
+                <ScalarProperty Name="EIN" ColumnName="EIN" />
+                <ScalarProperty Name="ARBasis" ColumnName="ARBasis" />
+                <ScalarProperty Name="APBasis" ColumnName="APBasis" />
+                <ScalarProperty Name="APGLAccountID" ColumnName="APGLAccountID" />
+                <ScalarProperty Name="FYStartMonth" ColumnName="FYStartMonth" />
+                <ScalarProperty Name="LastPaymentGLAccountID" ColumnName="LastPaymentGLAccountID" />
+                <ScalarProperty Name="StatementLayoutID" ColumnName="StatementLayoutID" />
+                <ScalarProperty Name="UseDefaultStatementSettings" ColumnName="UseDefaultStatementSettings" />
+                <ScalarProperty Name="CombineTAccts" ColumnName="CombineTAccts" />
+                <ScalarProperty Name="GroupSubTotal" ColumnName="GroupSubTotal" />
+                <ScalarProperty Name="ZeroBalanceStatements" ColumnName="ZeroBalanceStatements" />
+                <ScalarProperty Name="ACHStatements" ColumnName="ACHStatements" />
+                <ScalarProperty Name="StatementNote" ColumnName="StatementNote" />
+                <ScalarProperty Name="StatementFrequency" ColumnName="StatementFrequency" />
+                <ScalarProperty Name="StatementDay" ColumnName="StatementDay" />
+                <ScalarProperty Name="StatementLateDays" ColumnName="StatementLateDays" />
+                <ScalarProperty Name="StatementLateFee" ColumnName="StatementLateFee" />
+                <ScalarProperty Name="CostCenters" ColumnName="CostCenters" />
+                <ScalarProperty Name="ForceBudgetedGL" ColumnName="ForceBudgetedGL" />
+                <ScalarProperty Name="NPComplianceID" ColumnName="NPComplianceID" />
+                <ScalarProperty Name="NPDelinquencyID" ColumnName="NPDelinquencyID" />
+                <ScalarProperty Name="xID" ColumnName="xID" />
+                <ScalarProperty Name="RetainedEarningsGLAccountID" ColumnName="RetainedEarningsGLAccountID" />
+                <ScalarProperty Name="UsePriorAccountNumbers" ColumnName="UsePriorAccountNumbers" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="LastModified" ColumnName="LastModified" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CollectionPolicy" ColumnName="CollectionPolicy" />
+                <ScalarProperty Name="AppliedPaymentSortType" ColumnName="AppliedPaymentSortType" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="AccountNumbersRun" ColumnName="AccountNumbersRun" />
+                <ScalarProperty Name="IsTrainingClient" ColumnName="IsTrainingClient" />
+                <ScalarProperty Name="WorkingCapital" ColumnName="WorkingCapital" />
+                <ScalarProperty Name="UseCaliberWeb" ColumnName="UseCaliberWeb" />
+                <ScalarProperty Name="EnableCentralDisbursing" ColumnName="EnableCentralDisbursing" />
+                <ScalarProperty Name="LastPaymentCCID" ColumnName="LastPaymentCCID" />
+                <ScalarProperty Name="StatementLateFeePercentage" ColumnName="StatementLateFeePercentage" />
+                <ScalarProperty Name="StatementLateFeeType" ColumnName="StatementLateFeeType" />
+                <ScalarProperty Name="UseSpecifiedRemitAddress" ColumnName="UseSpecifiedRemitAddress" />
+                <ScalarProperty Name="ReserveRetainedEarningsGLAccountID" ColumnName="ReserveRetainedEarningsGLAccountID" />
+                <ScalarProperty Name="InActive" ColumnName="InActive" />
+                <ScalarProperty Name="ACHDescription" ColumnName="ACHDescription" />
+                <ScalarProperty Name="MaxUnits" ColumnName="MaxUnits" />
+                <ScalarProperty Name="APGLSetting" ColumnName="APGLSetting" />
+                <ScalarProperty Name="MainModule" ColumnName="MainModule" />
+                <ScalarProperty Name="iColligoAssociationID" ColumnName="iColligoAssociationID" />
+                <ScalarProperty Name="iColligoAuthCode" ColumnName="iColligoAuthCode" />
+                <ScalarProperty Name="OverrideDefaultWOTemplate" ColumnName="OverrideDefaultWOTemplate" />
+                <ScalarProperty Name="OverrideTemplateID" ColumnName="OverrideTemplateID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

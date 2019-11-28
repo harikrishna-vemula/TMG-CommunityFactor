@@ -14,7 +14,7 @@ using Community_Factor;
 using PagedList;
 namespace Community_Factor.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Assistant, SuperUser, Manager")]
     public class CommunitiesController : Controller
     {
         private PowerBI_UTILEntities db = new PowerBI_UTILEntities();

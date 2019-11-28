@@ -1,0 +1,1691 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProcessRenewalDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PRDateThresholds">
+          <Key>
+            <PropertyRef Name="DateThresholdID" />
+          </Key>
+          <Property Name="DateThresholdID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartProcess" Type="int" Nullable="false" />
+          <Property Name="OptOut" Type="int" Nullable="false" />
+          <Property Name="SurveyStart" Type="int" Nullable="false" />
+          <Property Name="SurveyEnd" Type="int" Nullable="false" />
+          <Property Name="NewRate" Type="int" Nullable="false" />
+          <Property Name="CreateRenewal" Type="int" Nullable="false" />
+          <Property Name="TenantDeadline" Type="int" Nullable="false" />
+          <Property Name="ExpireRenewal" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRErrorLogger">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ErrorMessage" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Stacktrace" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="InnerException" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ErrorLevel" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Type" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRLogger">
+          <Key>
+            <PropertyRef Name="LoggerID" />
+          </Key>
+          <Property Name="LoggerID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Action" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="RenewalID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="SettingsID" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRORSettings">
+          <Key>
+            <PropertyRef Name="ORSettingsID" />
+          </Key>
+          <Property Name="ORSettingsID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="MaxPercent" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="ORHOAEmail" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PROwners">
+          <Key>
+            <PropertyRef Name="OwnerID" />
+          </Key>
+          <Property Name="OwnerID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="OwnerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="OwnerEmail" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ProcessRenewalDB.dbo.PROwnersAndProperties' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PROwnersAndProperties">
+          <Key>
+            <PropertyRef Name="OwnerID" />
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="OwnerID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="PropertyID" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRProperties">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="PropertyName" Type="nvarchar" MaxLength="100" />
+          <Property Name="PropertyAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="PropertyCity" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropertyState" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropertyZip" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropertySiteManager" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropertySiteManagerContact" Type="nvarchar(max)" />
+          <Property Name="PropertyManagerID" Type="nchar" MaxLength="50" />
+          <Property Name="OwnerID" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRPropertyManagers">
+          <Key>
+            <PropertyRef Name="PropertyManagerID" />
+          </Key>
+          <Property Name="PropertyManagerID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="PropertyManagerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropertyManagerInitials" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropertyManagerExtraInfo" Type="nvarchar(max)" />
+          <Property Name="PropertyManagerAdmin" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRRenewalEmails">
+          <Key>
+            <PropertyRef Name="EmailsID" />
+          </Key>
+          <Property Name="EmailsID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="RenewalID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="RecipientType" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="EmailBody" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateSent" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Recipient" Type="nvarchar" MaxLength="150" />
+          <Property Name="RecipientID" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRRenewals">
+          <Key>
+            <PropertyRef Name="RenewalID" />
+          </Key>
+          <Property Name="RenewalID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="RenewalDate" Type="datetime2" Precision="7" />
+          <Property Name="OldRate" Type="money" />
+          <Property Name="NewRate" Type="money" />
+          <Property Name="SurveyID" Type="nchar" MaxLength="50" />
+          <Property Name="SurveyRequired" Type="nchar" MaxLength="10" />
+          <Property Name="UnitID" Type="nchar" MaxLength="50" />
+          <Property Name="CurrentStatus" Type="nvarchar(max)" />
+          <Property Name="HOAApproval" Type="nchar" MaxLength="10" />
+          <Property Name="HOAStatus" Type="nchar" MaxLength="20" />
+          <Property Name="OwnerStatus" Type="nchar" MaxLength="20" />
+          <Property Name="PMStatus" Type="nchar" MaxLength="20" />
+          <Property Name="HOADate" Type="datetime2" Precision="7" />
+          <Property Name="OwnerDate" Type="datetime2" Precision="7" />
+          <Property Name="PMDate" Type="datetime2" Precision="7" />
+          <Property Name="PropertyManagerID" Type="nchar" MaxLength="50" />
+          <Property Name="OwnerID" Type="nchar" MaxLength="50" />
+          <Property Name="COP" Type="nchar" MaxLength="10" />
+          <Property Name="RenewalState" Type="nchar" MaxLength="10" />
+          <Property Name="LastRenewal" Type="datetime2" Precision="7" />
+          <Property Name="NextRenewal" Type="datetime2" Precision="7" />
+          <Property Name="Subsidy" Type="nchar" MaxLength="10" />
+          <Property Name="Survey125" Type="nchar" MaxLength="10" />
+          <Property Name="AdobeID" Type="nchar" MaxLength="150" />
+          <Property Name="Renew" Type="nchar" MaxLength="10" />
+          <Property Name="Mtm" Type="nchar" MaxLength="10" />
+          <Property Name="PMAction" Type="nchar" MaxLength="10" />
+          <Property Name="SpecialProvisions" Type="nvarchar(max)" />
+          <Property Name="RentersInsur" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="PRRenewalStages">
+          <Key>
+            <PropertyRef Name="StageID" />
+          </Key>
+          <Property Name="StageID" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RenewalID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Stage" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRRoles">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRSettings">
+          <Key>
+            <PropertyRef Name="SettingsID" />
+          </Key>
+          <Property Name="SettingsID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UserID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="ORSettingsID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="WASettingsID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateThresholdsID" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRSurveys">
+          <Key>
+            <PropertyRef Name="SurveyID" />
+          </Key>
+          <Property Name="SurveyID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="AppfolioWorkOrderNo" Type="nchar" MaxLength="50" />
+          <Property Name="RazorSyncId" Type="nchar" MaxLength="50" />
+          <Property Name="ScheduledDate" Type="datetime2" Precision="7" />
+          <Property Name="SurveyStatus" Type="nchar" MaxLength="50" />
+          <Property Name="SurveyZip" Type="nchar" MaxLength="25" />
+          <Property Name="PropertyName" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="PRTenants">
+          <Key>
+            <PropertyRef Name="TenantID" />
+          </Key>
+          <Property Name="TenantID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="TenantName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UnitID" Type="nchar" MaxLength="50" />
+          <Property Name="TenantEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="TenantTags" Type="nvarchar(max)" />
+          <Property Name="TenantRentersInsurance" Type="datetime2" Precision="7" />
+          <Property Name="PrimaryTenant" Type="nvarchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="PRUnits">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="PropertyID" Type="nchar" MaxLength="50" />
+          <Property Name="UnitAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="CurrentRate" Type="money" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="State" Type="nchar" MaxLength="10" />
+          <Property Name="Zip" Type="nchar" MaxLength="10" />
+          <Property Name="PropertyManagerID" Type="nchar" MaxLength="50" />
+          <Property Name="Tags" Type="nvarchar(max)" />
+          <Property Name="RenewalDate" Type="datetime2" Precision="7" />
+          <Property Name="LastRenewal" Type="datetime2" Precision="7" />
+          <Property Name="Unit" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ProcessRenewalDB.dbo.PRUserRole' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PRUserRole">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleID" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRUsers">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserLastLogIn" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserNetworkName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PropertyManagerID" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PRWARateIncrease">
+          <Key>
+            <PropertyRef Name="WARateIncreaseID" />
+          </Key>
+          <Property Name="WARateIncreaseID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="WASettingsID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="RateStart" Type="int" Nullable="false" />
+          <Property Name="RateEnd" Type="int" />
+          <Property Name="Increase" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRWASettings">
+          <Key>
+            <PropertyRef Name="WASettingsID" />
+          </Key>
+          <Property Name="WASettingsID" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="WAHOAEmail" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_PROwnersAndProperties_PROwners">
+          <End Role="PROwners" Type="Self.PROwners" Multiplicity="1" />
+          <End Role="PROwnersAndProperties" Type="Self.PROwnersAndProperties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROwners">
+              <PropertyRef Name="OwnerID" />
+            </Principal>
+            <Dependent Role="PROwnersAndProperties">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROwnersAndProperties_PRProperties">
+          <End Role="PRProperties" Type="Self.PRProperties" Multiplicity="1" />
+          <End Role="PROwnersAndProperties" Type="Self.PROwnersAndProperties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRProperties">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="PROwnersAndProperties">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRProperties_PROwners">
+          <End Role="PROwners" Type="Self.PROwners" Multiplicity="0..1" />
+          <End Role="PRProperties" Type="Self.PRProperties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROwners">
+              <PropertyRef Name="OwnerID" />
+            </Principal>
+            <Dependent Role="PRProperties">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRProperties_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManagers" Multiplicity="0..1" />
+          <End Role="PRProperties" Type="Self.PRProperties" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRProperties">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRPropertyManagers_PRPropertyManagers">
+          <End Role="PRUsers" Type="Self.PRUsers" Multiplicity="0..1" />
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManagers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerAdmin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewalEmails_PRRenewals">
+          <End Role="PRRenewals" Type="Self.PRRenewals" Multiplicity="1" />
+          <End Role="PRRenewalEmails" Type="Self.PRRenewalEmails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRRenewals">
+              <PropertyRef Name="RenewalID" />
+            </Principal>
+            <Dependent Role="PRRenewalEmails">
+              <PropertyRef Name="RenewalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PROwners">
+          <End Role="PROwners" Type="Self.PROwners" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROwners">
+              <PropertyRef Name="OwnerID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManagers" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PRRenewals">
+          <End Role="PRUnits" Type="Self.PRUnits" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUnits">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PRSurveys">
+          <End Role="PRSurveys" Type="Self.PRSurveys" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRSurveys">
+              <PropertyRef Name="SurveyID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="SurveyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewalStages_PRRenewals">
+          <End Role="PRRenewals" Type="Self.PRRenewals" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PRRenewalStages" Type="Self.PRRenewalStages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRRenewals">
+              <PropertyRef Name="RenewalID" />
+            </Principal>
+            <Dependent Role="PRRenewalStages">
+              <PropertyRef Name="RenewalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSettings_PRDateThresholds">
+          <End Role="PRDateThresholds" Type="Self.PRDateThresholds" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRDateThresholds">
+              <PropertyRef Name="DateThresholdID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="DateThresholdsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSettings_PRORSettings">
+          <End Role="PRORSettings" Type="Self.PRORSettings" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRORSettings">
+              <PropertyRef Name="ORSettingsID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="ORSettingsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSettings_PRUsers">
+          <End Role="PRUsers" Type="Self.PRUsers" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSettings_PRWASettings">
+          <End Role="PRWASettings" Type="Self.PRWASettings" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSettings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRWASettings">
+              <PropertyRef Name="WASettingsID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="WASettingsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSurveys_PRSurveys">
+          <End Role="PRSurveys" Type="Self.PRSurveys" Multiplicity="1" />
+          <End Role="PRSurveys1" Type="Self.PRSurveys" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PRSurveys">
+              <PropertyRef Name="SurveyID" />
+            </Principal>
+            <Dependent Role="PRSurveys1">
+              <PropertyRef Name="SurveyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRTenants_PRUnits">
+          <End Role="PRUnits" Type="Self.PRUnits" Multiplicity="0..1" />
+          <End Role="PRTenants" Type="Self.PRTenants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUnits">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="PRTenants">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUnits_PRProperties">
+          <End Role="PRProperties" Type="Self.PRProperties" Multiplicity="0..1" />
+          <End Role="PRUnits" Type="Self.PRUnits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRProperties">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="PRUnits">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUnits_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManagers" Multiplicity="0..1" />
+          <End Role="PRUnits" Type="Self.PRUnits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRUnits">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUserRole_PRRoles">
+          <End Role="PRRoles" Type="Self.PRRoles" Multiplicity="1" />
+          <End Role="PRUserRole" Type="Self.PRUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRRoles">
+              <PropertyRef Name="RoleID" />
+            </Principal>
+            <Dependent Role="PRUserRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUserRole_PRUsers">
+          <End Role="PRUsers" Type="Self.PRUsers" Multiplicity="1" />
+          <End Role="PRUserRole" Type="Self.PRUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PRUserRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUsers_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManagers" Multiplicity="0..1" />
+          <End Role="PRUsers" Type="Self.PRUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRUsers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRWARateIncrease_PRWASettings">
+          <End Role="PRWASettings" Type="Self.PRWASettings" Multiplicity="1" />
+          <End Role="PRWARateIncrease" Type="Self.PRWARateIncrease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRWASettings">
+              <PropertyRef Name="WASettingsID" />
+            </Principal>
+            <Dependent Role="PRWARateIncrease">
+              <PropertyRef Name="WASettingsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="InsertErrorLog" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="errorMessage" Type="varchar(max)" Mode="In" />
+          <Parameter Name="stackTrace" Type="varchar(max)" Mode="In" />
+          <Parameter Name="innerException" Type="varchar(max)" Mode="In" />
+          <Parameter Name="errorLevel" Type="varchar(max)" Mode="In" />
+          <Parameter Name="type" Type="varchar(max)" Mode="In" />
+          <Parameter Name="message" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="ProcessRenewalDBModelStoreContainer">
+          <EntitySet Name="PRDateThresholds" EntityType="Self.PRDateThresholds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRErrorLogger" EntityType="Self.PRErrorLogger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRLogger" EntityType="Self.PRLogger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRORSettings" EntityType="Self.PRORSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PROwners" EntityType="Self.PROwners" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRProperties" EntityType="Self.PRProperties" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRPropertyManagers" EntityType="Self.PRPropertyManagers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRRenewalEmails" EntityType="Self.PRRenewalEmails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRRenewals" EntityType="Self.PRRenewals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRRenewalStages" EntityType="Self.PRRenewalStages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRRoles" EntityType="Self.PRRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRSettings" EntityType="Self.PRSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRSurveys" EntityType="Self.PRSurveys" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRTenants" EntityType="Self.PRTenants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRUnits" EntityType="Self.PRUnits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRUsers" EntityType="Self.PRUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRWARateIncrease" EntityType="Self.PRWARateIncrease" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRWASettings" EntityType="Self.PRWASettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PROwnersAndProperties" EntityType="Self.PROwnersAndProperties" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PROwnersAndProperties].[OwnerID] AS [OwnerID], 
+    [PROwnersAndProperties].[PropertyID] AS [PropertyID]
+    FROM [dbo].[PROwnersAndProperties] AS [PROwnersAndProperties]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PRUserRole" EntityType="Self.PRUserRole" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PRUserRole].[UserID] AS [UserID], 
+    [PRUserRole].[RoleID] AS [RoleID]
+    FROM [dbo].[PRUserRole] AS [PRUserRole]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_PROwnersAndProperties_PROwners" Association="Self.FK_PROwnersAndProperties_PROwners">
+            <End Role="PROwners" EntitySet="PROwners" />
+            <End Role="PROwnersAndProperties" EntitySet="PROwnersAndProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROwnersAndProperties_PRProperties" Association="Self.FK_PROwnersAndProperties_PRProperties">
+            <End Role="PRProperties" EntitySet="PRProperties" />
+            <End Role="PROwnersAndProperties" EntitySet="PROwnersAndProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRProperties_PROwners" Association="Self.FK_PRProperties_PROwners">
+            <End Role="PROwners" EntitySet="PROwners" />
+            <End Role="PRProperties" EntitySet="PRProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRProperties_PRPropertyManagers" Association="Self.FK_PRProperties_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRProperties" EntitySet="PRProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRPropertyManagers_PRPropertyManagers" Association="Self.FK_PRPropertyManagers_PRPropertyManagers">
+            <End Role="PRUsers" EntitySet="PRUsers" />
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewalEmails_PRRenewals" Association="Self.FK_PRRenewalEmails_PRRenewals">
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+            <End Role="PRRenewalEmails" EntitySet="PRRenewalEmails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PROwners" Association="Self.FK_PRRenewals_PROwners">
+            <End Role="PROwners" EntitySet="PROwners" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PRPropertyManagers" Association="Self.FK_PRRenewals_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PRRenewals" Association="Self.FK_PRRenewals_PRRenewals">
+            <End Role="PRUnits" EntitySet="PRUnits" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PRSurveys" Association="Self.FK_PRRenewals_PRSurveys">
+            <End Role="PRSurveys" EntitySet="PRSurveys" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewalStages_PRRenewals" Association="Self.FK_PRRenewalStages_PRRenewals">
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+            <End Role="PRRenewalStages" EntitySet="PRRenewalStages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSettings_PRDateThresholds" Association="Self.FK_PRSettings_PRDateThresholds">
+            <End Role="PRDateThresholds" EntitySet="PRDateThresholds" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSettings_PRORSettings" Association="Self.FK_PRSettings_PRORSettings">
+            <End Role="PRORSettings" EntitySet="PRORSettings" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSettings_PRUsers" Association="Self.FK_PRSettings_PRUsers">
+            <End Role="PRUsers" EntitySet="PRUsers" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSettings_PRWASettings" Association="Self.FK_PRSettings_PRWASettings">
+            <End Role="PRWASettings" EntitySet="PRWASettings" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSurveys_PRSurveys" Association="Self.FK_PRSurveys_PRSurveys">
+            <End Role="PRSurveys" EntitySet="PRSurveys" />
+            <End Role="PRSurveys1" EntitySet="PRSurveys" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRTenants_PRUnits" Association="Self.FK_PRTenants_PRUnits">
+            <End Role="PRUnits" EntitySet="PRUnits" />
+            <End Role="PRTenants" EntitySet="PRTenants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUnits_PRProperties" Association="Self.FK_PRUnits_PRProperties">
+            <End Role="PRProperties" EntitySet="PRProperties" />
+            <End Role="PRUnits" EntitySet="PRUnits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUnits_PRPropertyManagers" Association="Self.FK_PRUnits_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRUnits" EntitySet="PRUnits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUserRole_PRRoles" Association="Self.FK_PRUserRole_PRRoles">
+            <End Role="PRRoles" EntitySet="PRRoles" />
+            <End Role="PRUserRole" EntitySet="PRUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUserRole_PRUsers" Association="Self.FK_PRUserRole_PRUsers">
+            <End Role="PRUsers" EntitySet="PRUsers" />
+            <End Role="PRUserRole" EntitySet="PRUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUsers_PRPropertyManagers" Association="Self.FK_PRUsers_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRUsers" EntitySet="PRUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRWARateIncrease_PRWASettings" Association="Self.FK_PRWARateIncrease_PRWASettings">
+            <End Role="PRWASettings" EntitySet="PRWASettings" />
+            <End Role="PRWARateIncrease" EntitySet="PRWARateIncrease" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProcessRenewalDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PRDateThreshold">
+          <Key>
+            <PropertyRef Name="DateThresholdID" />
+          </Key>
+          <Property Name="DateThresholdID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="StartProcess" Type="Int32" Nullable="false" />
+          <Property Name="OptOut" Type="Int32" Nullable="false" />
+          <Property Name="SurveyStart" Type="Int32" Nullable="false" />
+          <Property Name="SurveyEnd" Type="Int32" Nullable="false" />
+          <Property Name="NewRate" Type="Int32" Nullable="false" />
+          <Property Name="CreateRenewal" Type="Int32" Nullable="false" />
+          <Property Name="TenantDeadline" Type="Int32" Nullable="false" />
+          <Property Name="ExpireRenewal" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PRSettings" Relationship="Self.FK_PRSettings_PRDateThresholds" FromRole="PRDateThresholds" ToRole="PRSettings" />
+        </EntityType>
+        <EntityType Name="PRErrorLogger">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Stacktrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="InnerException" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ErrorLevel" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRLogger">
+          <Key>
+            <PropertyRef Name="LoggerID" />
+          </Key>
+          <Property Name="LoggerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Action" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RenewalID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="SettingsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRORSetting">
+          <Key>
+            <PropertyRef Name="ORSettingsID" />
+          </Key>
+          <Property Name="ORSettingsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="MaxPercent" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ORHOAEmail" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PRSettings" Relationship="Self.FK_PRSettings_PRORSettings" FromRole="PRORSettings" ToRole="PRSettings" />
+        </EntityType>
+        <EntityType Name="PROwner">
+          <Key>
+            <PropertyRef Name="OwnerID" />
+          </Key>
+          <Property Name="OwnerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="OwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRProperties" Relationship="Self.FK_PRProperties_PROwners" FromRole="PROwners" ToRole="PRProperties" />
+          <NavigationProperty Name="PRRenewals" Relationship="Self.FK_PRRenewals_PROwners" FromRole="PROwners" ToRole="PRRenewals" />
+          <NavigationProperty Name="PRProperties1" Relationship="Self.PROwnersAndProperties" FromRole="PROwners" ToRole="PRProperties" />
+        </EntityType>
+        <EntityType Name="PRProperty">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+          </Key>
+          <Property Name="PropertyID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="PropertyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyCity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyState" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyZip" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropertySiteManager" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropertySiteManagerContact" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyManagerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="OwnerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PROwner" Relationship="Self.FK_PRProperties_PROwners" FromRole="PRProperties" ToRole="PROwners" />
+          <NavigationProperty Name="PRPropertyManager" Relationship="Self.FK_PRProperties_PRPropertyManagers" FromRole="PRProperties" ToRole="PRPropertyManagers" />
+          <NavigationProperty Name="PRUnits" Relationship="Self.FK_PRUnits_PRProperties" FromRole="PRProperties" ToRole="PRUnits" />
+          <NavigationProperty Name="PROwners" Relationship="Self.PROwnersAndProperties" FromRole="PRProperties" ToRole="PROwners" />
+        </EntityType>
+        <EntityType Name="PRPropertyManager">
+          <Key>
+            <PropertyRef Name="PropertyManagerID" />
+          </Key>
+          <Property Name="PropertyManagerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="PropertyManagerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyManagerInitials" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyManagerExtraInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyManagerAdmin" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PRProperties" Relationship="Self.FK_PRProperties_PRPropertyManagers" FromRole="PRPropertyManagers" ToRole="PRProperties" />
+          <NavigationProperty Name="PRUser" Relationship="Self.FK_PRPropertyManagers_PRPropertyManagers" FromRole="PRPropertyManagers" ToRole="PRUsers" />
+          <NavigationProperty Name="PRRenewals" Relationship="Self.FK_PRRenewals_PRPropertyManagers" FromRole="PRPropertyManagers" ToRole="PRRenewals" />
+          <NavigationProperty Name="PRUnits" Relationship="Self.FK_PRUnits_PRPropertyManagers" FromRole="PRPropertyManagers" ToRole="PRUnits" />
+          <NavigationProperty Name="PRUsers" Relationship="Self.FK_PRUsers_PRPropertyManagers" FromRole="PRPropertyManagers" ToRole="PRUsers" />
+        </EntityType>
+        <EntityType Name="PRRenewalEmail">
+          <Key>
+            <PropertyRef Name="EmailsID" />
+          </Key>
+          <Property Name="EmailsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="RenewalID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="RecipientType" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateSent" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Recipient" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="RecipientID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PRRenewal" Relationship="Self.FK_PRRenewalEmails_PRRenewals" FromRole="PRRenewalEmails" ToRole="PRRenewals" />
+        </EntityType>
+        <EntityType Name="PRRenewal">
+          <Key>
+            <PropertyRef Name="RenewalID" />
+          </Key>
+          <Property Name="RenewalID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="RenewalDate" Type="DateTime" Precision="7" />
+          <Property Name="OldRate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NewRate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SurveyID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="SurveyRequired" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="UnitID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="CurrentStatus" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HOAApproval" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="HOAStatus" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="OwnerStatus" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="PMStatus" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="HOADate" Type="DateTime" Precision="7" />
+          <Property Name="OwnerDate" Type="DateTime" Precision="7" />
+          <Property Name="PMDate" Type="DateTime" Precision="7" />
+          <Property Name="PropertyManagerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="OwnerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="COP" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="RenewalState" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="LastRenewal" Type="DateTime" Precision="7" />
+          <Property Name="NextRenewal" Type="DateTime" Precision="7" />
+          <Property Name="Subsidy" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Survey125" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="AdobeID" Type="String" MaxLength="150" FixedLength="true" Unicode="true" />
+          <Property Name="Renew" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Mtm" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="PMAction" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="SpecialProvisions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RentersInsur" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PROwner" Relationship="Self.FK_PRRenewals_PROwners" FromRole="PRRenewals" ToRole="PROwners" />
+          <NavigationProperty Name="PRPropertyManager" Relationship="Self.FK_PRRenewals_PRPropertyManagers" FromRole="PRRenewals" ToRole="PRPropertyManagers" />
+          <NavigationProperty Name="PRRenewalEmails" Relationship="Self.FK_PRRenewalEmails_PRRenewals" FromRole="PRRenewals" ToRole="PRRenewalEmails" />
+          <NavigationProperty Name="PRUnit" Relationship="Self.FK_PRRenewals_PRRenewals" FromRole="PRRenewals" ToRole="PRUnits" />
+          <NavigationProperty Name="PRSurvey" Relationship="Self.FK_PRRenewals_PRSurveys" FromRole="PRRenewals" ToRole="PRSurveys" />
+          <NavigationProperty Name="PRRenewalStages" Relationship="Self.FK_PRRenewalStages_PRRenewals" FromRole="PRRenewals" ToRole="PRRenewalStages" />
+        </EntityType>
+        <EntityType Name="PRRenewalStage">
+          <Key>
+            <PropertyRef Name="StageID" />
+          </Key>
+          <Property Name="StageID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RenewalID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Stage" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="PRRenewal" Relationship="Self.FK_PRRenewalStages_PRRenewals" FromRole="PRRenewalStages" ToRole="PRRenewals" />
+        </EntityType>
+        <EntityType Name="PRRole">
+          <Key>
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="RoleID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRUsers" Relationship="Self.PRUserRole" FromRole="PRRoles" ToRole="PRUsers" />
+        </EntityType>
+        <EntityType Name="PRSetting">
+          <Key>
+            <PropertyRef Name="SettingsID" />
+          </Key>
+          <Property Name="SettingsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ORSettingsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="WASettingsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="DateThresholdsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PRDateThreshold" Relationship="Self.FK_PRSettings_PRDateThresholds" FromRole="PRSettings" ToRole="PRDateThresholds" />
+          <NavigationProperty Name="PRORSetting" Relationship="Self.FK_PRSettings_PRORSettings" FromRole="PRSettings" ToRole="PRORSettings" />
+          <NavigationProperty Name="PRUser" Relationship="Self.FK_PRSettings_PRUsers" FromRole="PRSettings" ToRole="PRUsers" />
+          <NavigationProperty Name="PRWASetting" Relationship="Self.FK_PRSettings_PRWASettings" FromRole="PRSettings" ToRole="PRWASettings" />
+        </EntityType>
+        <EntityType Name="PRSurvey">
+          <Key>
+            <PropertyRef Name="SurveyID" />
+          </Key>
+          <Property Name="SurveyID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="AppfolioWorkOrderNo" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="RazorSyncId" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="ScheduledDate" Type="DateTime" Precision="7" />
+          <Property Name="SurveyStatus" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="SurveyZip" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+          <Property Name="PropertyName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRRenewals" Relationship="Self.FK_PRRenewals_PRSurveys" FromRole="PRSurveys" ToRole="PRRenewals" />
+          <NavigationProperty Name="PRSurveys1" Relationship="Self.FK_PRSurveys_PRSurveys" FromRole="PRSurveys" ToRole="PRSurveys1" />
+          <NavigationProperty Name="PRSurvey1" Relationship="Self.FK_PRSurveys_PRSurveys" FromRole="PRSurveys1" ToRole="PRSurveys" />
+        </EntityType>
+        <EntityType Name="PRTenant">
+          <Key>
+            <PropertyRef Name="TenantID" />
+          </Key>
+          <Property Name="TenantID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TenantName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UnitID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="TenantEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TenantTags" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TenantRentersInsurance" Type="DateTime" Precision="7" />
+          <Property Name="PrimaryTenant" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRUnit" Relationship="Self.FK_PRTenants_PRUnits" FromRole="PRTenants" ToRole="PRUnits" />
+        </EntityType>
+        <EntityType Name="PRUnit">
+          <Key>
+            <PropertyRef Name="UnitID" />
+          </Key>
+          <Property Name="UnitID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="PropertyID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="UnitAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentRate" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="PropertyManagerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Tags" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RenewalDate" Type="DateTime" Precision="7" />
+          <Property Name="LastRenewal" Type="DateTime" Precision="7" />
+          <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRProperty" Relationship="Self.FK_PRUnits_PRProperties" FromRole="PRUnits" ToRole="PRProperties" />
+          <NavigationProperty Name="PRPropertyManager" Relationship="Self.FK_PRUnits_PRPropertyManagers" FromRole="PRUnits" ToRole="PRPropertyManagers" />
+          <NavigationProperty Name="PRRenewals" Relationship="Self.FK_PRRenewals_PRRenewals" FromRole="PRUnits" ToRole="PRRenewals" />
+          <NavigationProperty Name="PRTenants" Relationship="Self.FK_PRTenants_PRUnits" FromRole="PRUnits" ToRole="PRTenants" />
+        </EntityType>
+        <EntityType Name="PRUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserLastLogIn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserNetworkName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PropertyManagerID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="PRPropertyManagers" Relationship="Self.FK_PRPropertyManagers_PRPropertyManagers" FromRole="PRUsers" ToRole="PRPropertyManagers" />
+          <NavigationProperty Name="PRPropertyManager" Relationship="Self.FK_PRUsers_PRPropertyManagers" FromRole="PRUsers" ToRole="PRPropertyManagers" />
+          <NavigationProperty Name="PRSettings" Relationship="Self.FK_PRSettings_PRUsers" FromRole="PRUsers" ToRole="PRSettings" />
+          <NavigationProperty Name="PRRoles" Relationship="Self.PRUserRole" FromRole="PRUsers" ToRole="PRRoles" />
+        </EntityType>
+        <EntityType Name="PRWARateIncrease">
+          <Key>
+            <PropertyRef Name="WARateIncreaseID" />
+          </Key>
+          <Property Name="WARateIncreaseID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="WASettingsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="RateStart" Type="Int32" Nullable="false" />
+          <Property Name="RateEnd" Type="Int32" />
+          <Property Name="Increase" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PRWASetting" Relationship="Self.FK_PRWARateIncrease_PRWASettings" FromRole="PRWARateIncrease" ToRole="PRWASettings" />
+        </EntityType>
+        <EntityType Name="PRWASetting">
+          <Key>
+            <PropertyRef Name="WASettingsID" />
+          </Key>
+          <Property Name="WASettingsID" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="WAHOAEmail" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PRSettings" Relationship="Self.FK_PRSettings_PRWASettings" FromRole="PRWASettings" ToRole="PRSettings" />
+          <NavigationProperty Name="PRWARateIncreases" Relationship="Self.FK_PRWARateIncrease_PRWASettings" FromRole="PRWASettings" ToRole="PRWARateIncrease" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_PRSettings_PRDateThresholds">
+          <End Role="PRDateThresholds" Type="Self.PRDateThreshold" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRDateThresholds">
+              <PropertyRef Name="DateThresholdID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="DateThresholdsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSettings_PRORSettings">
+          <End Role="PRORSettings" Type="Self.PRORSetting" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRORSettings">
+              <PropertyRef Name="ORSettingsID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="ORSettingsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRProperties_PROwners">
+          <End Role="PROwners" Type="Self.PROwner" Multiplicity="0..1" />
+          <End Role="PRProperties" Type="Self.PRProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROwners">
+              <PropertyRef Name="OwnerID" />
+            </Principal>
+            <Dependent Role="PRProperties">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PROwners">
+          <End Role="PROwners" Type="Self.PROwner" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROwners">
+              <PropertyRef Name="OwnerID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRProperties_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManager" Multiplicity="0..1" />
+          <End Role="PRProperties" Type="Self.PRProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRProperties">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUnits_PRProperties">
+          <End Role="PRProperties" Type="Self.PRProperty" Multiplicity="0..1" />
+          <End Role="PRUnits" Type="Self.PRUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRProperties">
+              <PropertyRef Name="PropertyID" />
+            </Principal>
+            <Dependent Role="PRUnits">
+              <PropertyRef Name="PropertyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRPropertyManagers_PRPropertyManagers">
+          <End Role="PRUsers" Type="Self.PRUser" Multiplicity="0..1" />
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManager" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerAdmin" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManager" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUnits_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManager" Multiplicity="0..1" />
+          <End Role="PRUnits" Type="Self.PRUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRUnits">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRUsers_PRPropertyManagers">
+          <End Role="PRPropertyManagers" Type="Self.PRPropertyManager" Multiplicity="0..1" />
+          <End Role="PRUsers" Type="Self.PRUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRPropertyManagers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Principal>
+            <Dependent Role="PRUsers">
+              <PropertyRef Name="PropertyManagerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewalEmails_PRRenewals">
+          <End Role="PRRenewals" Type="Self.PRRenewal" Multiplicity="1" />
+          <End Role="PRRenewalEmails" Type="Self.PRRenewalEmail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRRenewals">
+              <PropertyRef Name="RenewalID" />
+            </Principal>
+            <Dependent Role="PRRenewalEmails">
+              <PropertyRef Name="RenewalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PRRenewals">
+          <End Role="PRUnits" Type="Self.PRUnit" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUnits">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewals_PRSurveys">
+          <End Role="PRSurveys" Type="Self.PRSurvey" Multiplicity="0..1" />
+          <End Role="PRRenewals" Type="Self.PRRenewal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRSurveys">
+              <PropertyRef Name="SurveyID" />
+            </Principal>
+            <Dependent Role="PRRenewals">
+              <PropertyRef Name="SurveyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRRenewalStages_PRRenewals">
+          <End Role="PRRenewals" Type="Self.PRRenewal" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PRRenewalStages" Type="Self.PRRenewalStage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRRenewals">
+              <PropertyRef Name="RenewalID" />
+            </Principal>
+            <Dependent Role="PRRenewalStages">
+              <PropertyRef Name="RenewalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSettings_PRUsers">
+          <End Role="PRUsers" Type="Self.PRUser" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSettings_PRWASettings">
+          <End Role="PRWASettings" Type="Self.PRWASetting" Multiplicity="1" />
+          <End Role="PRSettings" Type="Self.PRSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRWASettings">
+              <PropertyRef Name="WASettingsID" />
+            </Principal>
+            <Dependent Role="PRSettings">
+              <PropertyRef Name="WASettingsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRSurveys_PRSurveys">
+          <End Role="PRSurveys" Type="Self.PRSurvey" Multiplicity="1" />
+          <End Role="PRSurveys1" Type="Self.PRSurvey" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PRSurveys">
+              <PropertyRef Name="SurveyID" />
+            </Principal>
+            <Dependent Role="PRSurveys1">
+              <PropertyRef Name="SurveyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRTenants_PRUnits">
+          <End Role="PRUnits" Type="Self.PRUnit" Multiplicity="0..1" />
+          <End Role="PRTenants" Type="Self.PRTenant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRUnits">
+              <PropertyRef Name="UnitID" />
+            </Principal>
+            <Dependent Role="PRTenants">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRWARateIncrease_PRWASettings">
+          <End Role="PRWASettings" Type="Self.PRWASetting" Multiplicity="1" />
+          <End Role="PRWARateIncrease" Type="Self.PRWARateIncrease" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRWASettings">
+              <PropertyRef Name="WASettingsID" />
+            </Principal>
+            <Dependent Role="PRWARateIncrease">
+              <PropertyRef Name="WASettingsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PROwnersAndProperties">
+          <End Role="PROwners" Type="Self.PROwner" Multiplicity="*" />
+          <End Role="PRProperties" Type="Self.PRProperty" Multiplicity="*" />
+        </Association>
+        <Association Name="PRUserRole">
+          <End Role="PRRoles" Type="Self.PRRole" Multiplicity="*" />
+          <End Role="PRUsers" Type="Self.PRUser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ProcessRenewalDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PRDateThresholds" EntityType="Self.PRDateThreshold" />
+          <EntitySet Name="PRErrorLoggers" EntityType="Self.PRErrorLogger" />
+          <EntitySet Name="PRLoggers" EntityType="Self.PRLogger" />
+          <EntitySet Name="PRORSettings" EntityType="Self.PRORSetting" />
+          <EntitySet Name="PROwners" EntityType="Self.PROwner" />
+          <EntitySet Name="PRProperties" EntityType="Self.PRProperty" />
+          <EntitySet Name="PRPropertyManagers" EntityType="Self.PRPropertyManager" />
+          <EntitySet Name="PRRenewalEmails" EntityType="Self.PRRenewalEmail" />
+          <EntitySet Name="PRRenewals" EntityType="Self.PRRenewal" />
+          <EntitySet Name="PRRenewalStages" EntityType="Self.PRRenewalStage" />
+          <EntitySet Name="PRRoles" EntityType="Self.PRRole" />
+          <EntitySet Name="PRSettings" EntityType="Self.PRSetting" />
+          <EntitySet Name="PRSurveys" EntityType="Self.PRSurvey" />
+          <EntitySet Name="PRTenants" EntityType="Self.PRTenant" />
+          <EntitySet Name="PRUnits" EntityType="Self.PRUnit" />
+          <EntitySet Name="PRUsers" EntityType="Self.PRUser" />
+          <EntitySet Name="PRWARateIncreases" EntityType="Self.PRWARateIncrease" />
+          <EntitySet Name="PRWASettings" EntityType="Self.PRWASetting" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_PRSettings_PRDateThresholds" Association="Self.FK_PRSettings_PRDateThresholds">
+            <End Role="PRDateThresholds" EntitySet="PRDateThresholds" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSettings_PRORSettings" Association="Self.FK_PRSettings_PRORSettings">
+            <End Role="PRORSettings" EntitySet="PRORSettings" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRProperties_PROwners" Association="Self.FK_PRProperties_PROwners">
+            <End Role="PROwners" EntitySet="PROwners" />
+            <End Role="PRProperties" EntitySet="PRProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PROwners" Association="Self.FK_PRRenewals_PROwners">
+            <End Role="PROwners" EntitySet="PROwners" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRProperties_PRPropertyManagers" Association="Self.FK_PRProperties_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRProperties" EntitySet="PRProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUnits_PRProperties" Association="Self.FK_PRUnits_PRProperties">
+            <End Role="PRProperties" EntitySet="PRProperties" />
+            <End Role="PRUnits" EntitySet="PRUnits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRPropertyManagers_PRPropertyManagers" Association="Self.FK_PRPropertyManagers_PRPropertyManagers">
+            <End Role="PRUsers" EntitySet="PRUsers" />
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PRPropertyManagers" Association="Self.FK_PRRenewals_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUnits_PRPropertyManagers" Association="Self.FK_PRUnits_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRUnits" EntitySet="PRUnits" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRUsers_PRPropertyManagers" Association="Self.FK_PRUsers_PRPropertyManagers">
+            <End Role="PRPropertyManagers" EntitySet="PRPropertyManagers" />
+            <End Role="PRUsers" EntitySet="PRUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewalEmails_PRRenewals" Association="Self.FK_PRRenewalEmails_PRRenewals">
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+            <End Role="PRRenewalEmails" EntitySet="PRRenewalEmails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PRRenewals" Association="Self.FK_PRRenewals_PRRenewals">
+            <End Role="PRUnits" EntitySet="PRUnits" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewals_PRSurveys" Association="Self.FK_PRRenewals_PRSurveys">
+            <End Role="PRSurveys" EntitySet="PRSurveys" />
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRRenewalStages_PRRenewals" Association="Self.FK_PRRenewalStages_PRRenewals">
+            <End Role="PRRenewals" EntitySet="PRRenewals" />
+            <End Role="PRRenewalStages" EntitySet="PRRenewalStages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSettings_PRUsers" Association="Self.FK_PRSettings_PRUsers">
+            <End Role="PRUsers" EntitySet="PRUsers" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSettings_PRWASettings" Association="Self.FK_PRSettings_PRWASettings">
+            <End Role="PRWASettings" EntitySet="PRWASettings" />
+            <End Role="PRSettings" EntitySet="PRSettings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRSurveys_PRSurveys" Association="Self.FK_PRSurveys_PRSurveys">
+            <End Role="PRSurveys" EntitySet="PRSurveys" />
+            <End Role="PRSurveys1" EntitySet="PRSurveys" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRTenants_PRUnits" Association="Self.FK_PRTenants_PRUnits">
+            <End Role="PRUnits" EntitySet="PRUnits" />
+            <End Role="PRTenants" EntitySet="PRTenants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRWARateIncrease_PRWASettings" Association="Self.FK_PRWARateIncrease_PRWASettings">
+            <End Role="PRWASettings" EntitySet="PRWASettings" />
+            <End Role="PRWARateIncrease" EntitySet="PRWARateIncreases" />
+          </AssociationSet>
+          <AssociationSet Name="PROwnersAndProperties" Association="Self.PROwnersAndProperties">
+            <End Role="PROwners" EntitySet="PROwners" />
+            <End Role="PRProperties" EntitySet="PRProperties" />
+          </AssociationSet>
+          <AssociationSet Name="PRUserRole" Association="Self.PRUserRole">
+            <End Role="PRRoles" EntitySet="PRRoles" />
+            <End Role="PRUsers" EntitySet="PRUsers" />
+          </AssociationSet>
+          <FunctionImport Name="InsertErrorLog">
+            <Parameter Name="errorMessage" Mode="In" Type="String" />
+            <Parameter Name="stackTrace" Mode="In" Type="String" />
+            <Parameter Name="innerException" Mode="In" Type="String" />
+            <Parameter Name="errorLevel" Mode="In" Type="String" />
+            <Parameter Name="type" Mode="In" Type="String" />
+            <Parameter Name="message" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ProcessRenewalDBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ProcessRenewalDBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProcessRenewalDBModelStoreContainer" CdmEntityContainer="ProcessRenewalDBEntities">
+          <EntitySetMapping Name="PRDateThresholds">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRDateThreshold">
+              <MappingFragment StoreEntitySet="PRDateThresholds">
+                <ScalarProperty Name="DateThresholdID" ColumnName="DateThresholdID" />
+                <ScalarProperty Name="StartProcess" ColumnName="StartProcess" />
+                <ScalarProperty Name="OptOut" ColumnName="OptOut" />
+                <ScalarProperty Name="SurveyStart" ColumnName="SurveyStart" />
+                <ScalarProperty Name="SurveyEnd" ColumnName="SurveyEnd" />
+                <ScalarProperty Name="NewRate" ColumnName="NewRate" />
+                <ScalarProperty Name="CreateRenewal" ColumnName="CreateRenewal" />
+                <ScalarProperty Name="TenantDeadline" ColumnName="TenantDeadline" />
+                <ScalarProperty Name="ExpireRenewal" ColumnName="ExpireRenewal" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRErrorLoggers">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRErrorLogger">
+              <MappingFragment StoreEntitySet="PRErrorLogger">
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="Stacktrace" ColumnName="Stacktrace" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="InnerException" ColumnName="InnerException" />
+                <ScalarProperty Name="ErrorLevel" ColumnName="ErrorLevel" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRLoggers">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRLogger">
+              <MappingFragment StoreEntitySet="PRLogger">
+                <ScalarProperty Name="LoggerID" ColumnName="LoggerID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="RenewalID" ColumnName="RenewalID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SettingsID" ColumnName="SettingsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRORSettings">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRORSetting">
+              <MappingFragment StoreEntitySet="PRORSettings">
+                <ScalarProperty Name="ORSettingsID" ColumnName="ORSettingsID" />
+                <ScalarProperty Name="MaxPercent" ColumnName="MaxPercent" />
+                <ScalarProperty Name="ORHOAEmail" ColumnName="ORHOAEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROwners">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PROwner">
+              <MappingFragment StoreEntitySet="PROwners">
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+                <ScalarProperty Name="OwnerName" ColumnName="OwnerName" />
+                <ScalarProperty Name="OwnerEmail" ColumnName="OwnerEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRProperties">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRProperty">
+              <MappingFragment StoreEntitySet="PRProperties">
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+                <ScalarProperty Name="PropertyAddress" ColumnName="PropertyAddress" />
+                <ScalarProperty Name="PropertyCity" ColumnName="PropertyCity" />
+                <ScalarProperty Name="PropertyState" ColumnName="PropertyState" />
+                <ScalarProperty Name="PropertyZip" ColumnName="PropertyZip" />
+                <ScalarProperty Name="PropertySiteManager" ColumnName="PropertySiteManager" />
+                <ScalarProperty Name="PropertySiteManagerContact" ColumnName="PropertySiteManagerContact" />
+                <ScalarProperty Name="PropertyManagerID" ColumnName="PropertyManagerID" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRPropertyManagers">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRPropertyManager">
+              <MappingFragment StoreEntitySet="PRPropertyManagers">
+                <ScalarProperty Name="PropertyManagerID" ColumnName="PropertyManagerID" />
+                <ScalarProperty Name="PropertyManagerName" ColumnName="PropertyManagerName" />
+                <ScalarProperty Name="PropertyManagerInitials" ColumnName="PropertyManagerInitials" />
+                <ScalarProperty Name="PropertyManagerExtraInfo" ColumnName="PropertyManagerExtraInfo" />
+                <ScalarProperty Name="PropertyManagerAdmin" ColumnName="PropertyManagerAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRRenewalEmails">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRRenewalEmail">
+              <MappingFragment StoreEntitySet="PRRenewalEmails">
+                <ScalarProperty Name="EmailsID" ColumnName="EmailsID" />
+                <ScalarProperty Name="RenewalID" ColumnName="RenewalID" />
+                <ScalarProperty Name="RecipientType" ColumnName="RecipientType" />
+                <ScalarProperty Name="EmailBody" ColumnName="EmailBody" />
+                <ScalarProperty Name="DateSent" ColumnName="DateSent" />
+                <ScalarProperty Name="Recipient" ColumnName="Recipient" />
+                <ScalarProperty Name="RecipientID" ColumnName="RecipientID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRRenewals">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRRenewal">
+              <MappingFragment StoreEntitySet="PRRenewals">
+                <ScalarProperty Name="RenewalID" ColumnName="RenewalID" />
+                <ScalarProperty Name="RenewalDate" ColumnName="RenewalDate" />
+                <ScalarProperty Name="OldRate" ColumnName="OldRate" />
+                <ScalarProperty Name="NewRate" ColumnName="NewRate" />
+                <ScalarProperty Name="SurveyID" ColumnName="SurveyID" />
+                <ScalarProperty Name="SurveyRequired" ColumnName="SurveyRequired" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="CurrentStatus" ColumnName="CurrentStatus" />
+                <ScalarProperty Name="HOAApproval" ColumnName="HOAApproval" />
+                <ScalarProperty Name="HOAStatus" ColumnName="HOAStatus" />
+                <ScalarProperty Name="OwnerStatus" ColumnName="OwnerStatus" />
+                <ScalarProperty Name="PMStatus" ColumnName="PMStatus" />
+                <ScalarProperty Name="HOADate" ColumnName="HOADate" />
+                <ScalarProperty Name="OwnerDate" ColumnName="OwnerDate" />
+                <ScalarProperty Name="PMDate" ColumnName="PMDate" />
+                <ScalarProperty Name="PropertyManagerID" ColumnName="PropertyManagerID" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+                <ScalarProperty Name="COP" ColumnName="COP" />
+                <ScalarProperty Name="RenewalState" ColumnName="RenewalState" />
+                <ScalarProperty Name="LastRenewal" ColumnName="LastRenewal" />
+                <ScalarProperty Name="NextRenewal" ColumnName="NextRenewal" />
+                <ScalarProperty Name="Subsidy" ColumnName="Subsidy" />
+                <ScalarProperty Name="Survey125" ColumnName="Survey125" />
+                <ScalarProperty Name="AdobeID" ColumnName="AdobeID" />
+                <ScalarProperty Name="Renew" ColumnName="Renew" />
+                <ScalarProperty Name="Mtm" ColumnName="Mtm" />
+                <ScalarProperty Name="PMAction" ColumnName="PMAction" />
+                <ScalarProperty Name="SpecialProvisions" ColumnName="SpecialProvisions" />
+                <ScalarProperty Name="RentersInsur" ColumnName="RentersInsur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRRenewalStages">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRRenewalStage">
+              <MappingFragment StoreEntitySet="PRRenewalStages">
+                <ScalarProperty Name="StageID" ColumnName="StageID" />
+                <ScalarProperty Name="RenewalID" ColumnName="RenewalID" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRRoles">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRRole">
+              <MappingFragment StoreEntitySet="PRRoles">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRSettings">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRSetting">
+              <MappingFragment StoreEntitySet="PRSettings">
+                <ScalarProperty Name="SettingsID" ColumnName="SettingsID" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ORSettingsID" ColumnName="ORSettingsID" />
+                <ScalarProperty Name="WASettingsID" ColumnName="WASettingsID" />
+                <ScalarProperty Name="DateThresholdsID" ColumnName="DateThresholdsID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRSurveys">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRSurvey">
+              <MappingFragment StoreEntitySet="PRSurveys">
+                <ScalarProperty Name="SurveyID" ColumnName="SurveyID" />
+                <ScalarProperty Name="AppfolioWorkOrderNo" ColumnName="AppfolioWorkOrderNo" />
+                <ScalarProperty Name="RazorSyncId" ColumnName="RazorSyncId" />
+                <ScalarProperty Name="ScheduledDate" ColumnName="ScheduledDate" />
+                <ScalarProperty Name="SurveyStatus" ColumnName="SurveyStatus" />
+                <ScalarProperty Name="SurveyZip" ColumnName="SurveyZip" />
+                <ScalarProperty Name="PropertyName" ColumnName="PropertyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRTenants">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRTenant">
+              <MappingFragment StoreEntitySet="PRTenants">
+                <ScalarProperty Name="TenantID" ColumnName="TenantID" />
+                <ScalarProperty Name="TenantName" ColumnName="TenantName" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="TenantEmail" ColumnName="TenantEmail" />
+                <ScalarProperty Name="TenantTags" ColumnName="TenantTags" />
+                <ScalarProperty Name="TenantRentersInsurance" ColumnName="TenantRentersInsurance" />
+                <ScalarProperty Name="PrimaryTenant" ColumnName="PrimaryTenant" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRUnits">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRUnit">
+              <MappingFragment StoreEntitySet="PRUnits">
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+                <ScalarProperty Name="UnitAddress" ColumnName="UnitAddress" />
+                <ScalarProperty Name="CurrentRate" ColumnName="CurrentRate" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="PropertyManagerID" ColumnName="PropertyManagerID" />
+                <ScalarProperty Name="Tags" ColumnName="Tags" />
+                <ScalarProperty Name="RenewalDate" ColumnName="RenewalDate" />
+                <ScalarProperty Name="LastRenewal" ColumnName="LastRenewal" />
+                <ScalarProperty Name="Unit" ColumnName="Unit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRUsers">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRUser">
+              <MappingFragment StoreEntitySet="PRUsers">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserLastLogIn" ColumnName="UserLastLogIn" />
+                <ScalarProperty Name="UserNetworkName" ColumnName="UserNetworkName" />
+                <ScalarProperty Name="PropertyManagerID" ColumnName="PropertyManagerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRWARateIncreases">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRWARateIncrease">
+              <MappingFragment StoreEntitySet="PRWARateIncrease">
+                <ScalarProperty Name="WARateIncreaseID" ColumnName="WARateIncreaseID" />
+                <ScalarProperty Name="WASettingsID" ColumnName="WASettingsID" />
+                <ScalarProperty Name="RateStart" ColumnName="RateStart" />
+                <ScalarProperty Name="RateEnd" ColumnName="RateEnd" />
+                <ScalarProperty Name="Increase" ColumnName="Increase" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRWASettings">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.PRWASetting">
+              <MappingFragment StoreEntitySet="PRWASettings">
+                <ScalarProperty Name="WASettingsID" ColumnName="WASettingsID" />
+                <ScalarProperty Name="WAHOAEmail" ColumnName="WAHOAEmail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ProcessRenewalDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PROwnersAndProperties" TypeName="ProcessRenewalDBModel.PROwnersAndProperties" StoreEntitySet="PROwnersAndProperties">
+            <EndProperty Name="PROwners">
+              <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+            </EndProperty>
+            <EndProperty Name="PRProperties">
+              <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PRUserRole" TypeName="ProcessRenewalDBModel.PRUserRole" StoreEntitySet="PRUserRole">
+            <EndProperty Name="PRRoles">
+              <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+            </EndProperty>
+            <EndProperty Name="PRUsers">
+              <ScalarProperty Name="UserID" ColumnName="UserID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="InsertErrorLog" FunctionName="ProcessRenewalDBModel.Store.InsertErrorLog" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ProcessRenewalDBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ProcessRenewalDBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ProcessRenewalDBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="ProcessRenewalDBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProcessRenewalDBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ProcessRenewalDBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ProcessRenewalDBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ProcessRenewalDBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ProcessRenewalDBModel.Store.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

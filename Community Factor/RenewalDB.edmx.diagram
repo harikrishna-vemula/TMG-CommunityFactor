@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="456a1586925647d690921a2f7f3a2a14" Name="Diagram1">
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRDateThreshold" Width="1.5" PointX="9.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRErrorLogger" Width="1.5" PointX="9.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRLogger" Width="1.5" PointX="3.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRORSetting" Width="1.5" PointX="9.75" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PROwner" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRProperty" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRPropertyManager" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRRenewalEmail" Width="1.5" PointX="9.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRRenewal" Width="1.5" PointX="7.5" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRRenewalStage" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRRole" Width="1.5" PointX="1.5" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRSetting" Width="1.5" PointX="12" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRSurvey" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRTenant" Width="1.5" PointX="7.5" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRUnit" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRUser" Width="1.5" PointX="1.5" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRWARateIncrease" Width="1.5" PointX="12" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.PRWASetting" Width="1.5" PointX="9.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProcessRenewalDBModel.sysdiagram" Width="1.5" PointX="11.75" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRSettings_PRDateThresholds" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRSettings_PRORSettings" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRProperties_PROwners" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRRenewals_PROwners" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRProperties_PRPropertyManagers" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRUnits_PRProperties" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRPropertyManagers_PRPropertyManagers" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRRenewals_PRPropertyManagers" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRUnits_PRPropertyManagers" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRUsers_PRPropertyManagers" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRRenewalEmails_PRRenewals" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRRenewals_PRRenewals" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRRenewals_PRSurveys" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRRenewalStages_PRRenewals" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRSettings_PRUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRSettings_PRWASettings" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRSurveys_PRSurveys" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRTenants_PRUnits" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.FK_PRWARateIncrease_PRWASettings" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.PROwnersAndProperties" ManuallyRouted="false" />
+        <AssociationConnector Association="ProcessRenewalDBModel.PRUserRole" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

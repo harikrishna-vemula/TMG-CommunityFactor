@@ -7,99 +7,119 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using Community_Factor;
+using System.Web.Security;
 using PagedList;
+
 namespace Community_Factor.Controllers
 {
-    [Authorize(Roles = "Assistant, SuperUser, Manager")]
+    [AllowAnonymous]
     public class CommunitiesController : Controller
     {
         private PowerBI_UTILEntities db = new PowerBI_UTILEntities();
         private Caliber_AMSNorthwestEntities dbCaliber = new Caliber_AMSNorthwestEntities();
+        private ProcessRenewalDBEntities dbRenewal = new ProcessRenewalDBEntities();
 
+
+        //[Authorize(Roles = "Assistant, SuperUser, Manager")]
+        //public ActionResult SignIn()
+        //{
+        //    return RedirectToAction("Index", "Communities");
+        //}
 
         // GET: Communities
-        public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page, string refresh)
+
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, string refresh)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "CommunityName" : "";
-            ViewBag.DateSortParm = sortOrder == "Factor" ? "Factor_Desc" : "Factor";
+            PRUser user = dbRenewal.PRUsers.SingleOrDefault(u => u.UserNetworkName == User.Identity.Name);
 
-            if (searchString != null)
+            if (user != null)
             {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "CommunityName" : "";
+                ViewBag.DateSortParm = sortOrder == "Factor" ? "Factor_Desc" : "Factor";
 
-            ViewBag.CurrentFilter = searchString;
-
-            List<Client> clients = dbCaliber.Clients.Where(r => r.IsDeleted == false && r.InActive==false).ToList();
-            List<Community> communities = db.Communities.ToList();
-            var results = clients.Where(p => !communities.Any(p2 => p2.ClientId == p.ClientID));
-            if (refresh != null && results.Count() > 0)
-            {
-                DataTable destinationDataTable = ToDataTable(results.ToList());
-                string consString = ConfigurationManager.ConnectionStrings["AutomationDBConnection"].ConnectionString;
-                string TableName = "";
-                using (SqlConnection con = new SqlConnection(consString))
+                if (searchString != null)
                 {
-                    TableName = "Community";
-                    using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con, SqlBulkCopyOptions.FireTriggers, null) { DestinationTableName = "dbo." + TableName })
+                    page = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                ViewBag.CurrentFilter = searchString;
+
+                List<Client> clients = dbCaliber.Clients.Where(r => r.IsDeleted == false && r.InActive == false).ToList();
+                List<Community> communities = db.Communities.ToList();
+                var results = clients.Where(p => !communities.Any(p2 => p2.ClientId == p.ClientID));
+                if (refresh != null && results.Count() > 0)
+                {
+                    DataTable destinationDataTable = ToDataTable(results.ToList());
+                    string consString = ConfigurationManager.ConnectionStrings["AutomationDBConnection"].ConnectionString;
+                    string TableName = "";
+                    using (SqlConnection con = new SqlConnection(consString))
                     {
-                        sqlBulkCopy.DestinationTableName = "dbo." + TableName;
-                        using (DbContextTransaction transaction = db.Database.BeginTransaction())
+                        TableName = "Community";
+                        using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con, SqlBulkCopyOptions.FireTriggers, null) { DestinationTableName = "dbo." + TableName })
                         {
-                            sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping("ClientId", "ClientId"));
-                            con.Open();
-                            sqlBulkCopy.WriteToServer(destinationDataTable);
-                            transaction.Commit();
+                            sqlBulkCopy.DestinationTableName = "dbo." + TableName;
+                            using (DbContextTransaction transaction = db.Database.BeginTransaction())
+                            {
+                                sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping("ClientId", "ClientId"));
+                                con.Open();
+                                sqlBulkCopy.WriteToServer(destinationDataTable);
+                                transaction.Commit();
+                            }
                         }
+
                     }
 
                 }
+                List<Community> listCommunities = db.Communities.ToList().
+                                            Join(dbCaliber.Clients, u => u.ClientId, uir => uir.ClientID,
+                                            (u, uir) => new { u, uir })
+                                            .Where(r => r.uir.IsDeleted == false && r.uir.InActive == false)
+                                            .Select(m => new Community
+                                            {
+                                                ClientId = m.u.ClientId,
+                                                CommunityName = m.uir.ClientName,
+                                                Factor = m.u.Factor,
+                                                ID = m.u.ID
+                                            }).ToList();
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    listCommunities = listCommunities.Where(s => s.CommunityName.Contains(searchString)
+                                           || s.CommunityName.Contains(searchString)).ToList();
+                }
+                switch (sortOrder)
+                {
+                    case "CommunityName":
+                        listCommunities = listCommunities.OrderByDescending(s => s.CommunityName).ToList();
+                        break;
+                    case "Factor":
+                        listCommunities = listCommunities.OrderBy(s => s.Factor).ToList();
+                        break;
+                    case "Factor_Desc":
+                        listCommunities = listCommunities.OrderByDescending(s => s.Factor).ToList();
+                        break;
+                    default:  // Name ascending 
+                        listCommunities = listCommunities.OrderBy(s => s.CommunityName).ToList();
+                        break;
+                }
 
-            }
-            List<Community> listCommunities = db.Communities.ToList().
-                                        Join(dbCaliber.Clients, u => u.ClientId, uir => uir.ClientID,
-                                        (u, uir) => new { u, uir })
-                                        .Where(r=>r.uir.IsDeleted==false && r.uir.InActive == false)
-                                        .Select(m => new Community
-                                        {
-                                            ClientId = m.u.ClientId,
-                                            CommunityName = m.uir.ClientName,
-                                            Factor = m.u.Factor,
-                                            ID = m.u.ID
-                                        }).ToList();
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                listCommunities = listCommunities.Where(s => s.CommunityName.Contains(searchString)
-                                       || s.CommunityName.Contains(searchString)).ToList();
-            }
-            switch (sortOrder)
-            {
-                case "CommunityName":
-                    listCommunities = listCommunities.OrderByDescending(s => s.CommunityName).ToList();
-                    break;
-                case "Factor":
-                    listCommunities = listCommunities.OrderBy(s => s.Factor).ToList();
-                    break;
-                case "Factor_Desc":
-                    listCommunities = listCommunities.OrderByDescending(s => s.Factor).ToList();
-                    break;
-                default:  // Name ascending 
-                    listCommunities = listCommunities.OrderBy(s => s.CommunityName).ToList();
-                    break;
+                int pageSize = 50;
+                int pageNumber = (page ?? 1);
+                return View(listCommunities.ToPagedList(pageNumber, pageSize));
             }
 
-            int pageSize = 50;
-            int pageNumber = (page ?? 1);
-            return View(listCommunities.ToPagedList(pageNumber, pageSize));
+            else
+            {
+                return RedirectToAction("Index", "AccessDenied");
+            }
+
+                
+
         }
 
         public static DataTable ToDataTable<Client>(List<Client> items)
@@ -149,7 +169,7 @@ namespace Community_Factor.Controllers
                                             ID = m.u.ID
                                         }).ToList();//db.Communities.Find(id);
             Community community = communities.FirstOrDefault();
-            
+
             if (community == null)
             {
                 return HttpNotFound();

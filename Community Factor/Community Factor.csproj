@@ -155,6 +155,7 @@
     <Compile Include="Community.cs">
       <DependentUpon>PowerBI_UTIL.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\AccessDeniedController.cs" />
     <Compile Include="Controllers\CommunitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -175,7 +176,85 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PowerBI_UTIL.edmx</DependentUpon>
     </Compile>
+    <Compile Include="PRDateThreshold.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRErrorLogger.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRLogger.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PRORSetting.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PROwner.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRProperty.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRPropertyManager.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRRenewal.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRRenewalEmail.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRRenewalStage.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRRole.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRSetting.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRSurvey.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRTenant.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRUnit.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRUser.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRWARateIncrease.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRWASetting.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RenewalDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RenewalDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RenewalDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RenewalDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RenewalDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>RenewalDB.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Caliber_AMSNorthwest.Context.tt">
@@ -365,6 +444,16 @@
       <DependentUpon>PowerBI_UTIL.edmx</DependentUpon>
       <LastGenOutput>PowerBI_UTIL.cs</LastGenOutput>
     </Content>
+    <Content Include="RenewalDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RenewalDB.edmx</DependentUpon>
+      <LastGenOutput>RenewalDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="RenewalDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RenewalDB.edmx</DependentUpon>
+      <LastGenOutput>RenewalDB.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="PowerBI_UTIL.edmx">
@@ -384,6 +473,13 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <EntityDeploy Include="RenewalDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>RenewalDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="RenewalDB.edmx.diagram">
+      <DependentUpon>RenewalDB.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />
@@ -490,6 +586,7 @@
     <Content Include="Views\Communities\Details.cshtml" />
     <Content Include="Views\Communities\Edit.cshtml" />
     <Content Include="Views\Communities\Index.cshtml" />
+    <Content Include="Views\AccessDenied\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

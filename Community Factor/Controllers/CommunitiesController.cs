@@ -118,7 +118,7 @@ namespace Community_Factor.Controllers
                 return RedirectToAction("Index", "AccessDenied");
             }
 
-                
+
 
         }
 

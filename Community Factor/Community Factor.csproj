@@ -487,6 +487,7 @@
       <DependentUpon>RenewalDB.edmx</DependentUpon>
     </Content>
     <Content Include=".editorconfig" />
+    <Content Include="Late Fee Calculator.pbix" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.min.js" />

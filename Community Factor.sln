@@ -5,11 +5,6 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Community Factor", "Community Factor\Community Factor.csproj", "{C243E16B-FCB8-4A79-B156-E6E8EDE63B26}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28A0E72B-982E-4762-B189-6E3CCBD99E90}"
-	ProjectSection(SolutionItems) = preProject
-		C:\Users\harikrishnav\Desktop\Late Fee Calculator.pbix = C:\Users\harikrishnav\Desktop\Late Fee Calculator.pbix
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

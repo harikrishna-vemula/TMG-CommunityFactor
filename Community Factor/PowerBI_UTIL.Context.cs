@@ -28,6 +28,7 @@ namespace Community_Factor
         }
     
         public virtual DbSet<Community> Communities { get; set; }
+        public virtual DbSet<CFUser> CFUsers { get; set; }
     
         public virtual int InsertCommunity(Nullable<int> clientId, Nullable<decimal> factor)
         {

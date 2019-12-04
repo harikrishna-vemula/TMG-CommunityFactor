@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="762c1f90244849e4a923a73750edc463" Name="Diagram1">
         <EntityTypeShape EntityType="PowerBI_UTILModel.Community" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerBI_UTILModel.CFUser" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -155,6 +155,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Caliber_AMSNorthwest.edmx</DependentUpon>
     </Compile>
+    <Compile Include="CFUser.cs">
+      <DependentUpon>PowerBI_UTIL.tt</DependentUpon>
+    </Compile>
     <Compile Include="Client.cs">
       <DependentUpon>Caliber_AMSNorthwest.tt</DependentUpon>
     </Compile>
@@ -162,6 +165,7 @@
       <DependentUpon>PowerBI_UTIL.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccessDeniedController.cs" />
+    <Compile Include="Controllers\CFUsersController.cs" />
     <Compile Include="Controllers\CommunitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -595,6 +599,11 @@
     <Content Include="Views\Communities\Edit.cshtml" />
     <Content Include="Views\Communities\Index.cshtml" />
     <Content Include="Views\AccessDenied\Index.cshtml" />
+    <Content Include="Views\CFUsers\Create.cshtml" />
+    <Content Include="Views\CFUsers\Delete.cshtml" />
+    <Content Include="Views\CFUsers\Details.cshtml" />
+    <Content Include="Views\CFUsers\Edit.cshtml" />
+    <Content Include="Views\CFUsers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

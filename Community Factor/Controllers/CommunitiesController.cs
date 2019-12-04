@@ -31,7 +31,7 @@ namespace Community_Factor.Controllers
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, string refresh)
         {
-            PRUser user = dbRenewal.PRUsers.SingleOrDefault(u => u.UserNetworkName == User.Identity.Name);
+            CFUser user = db.CFUsers.SingleOrDefault(u => u.UserNetworkName == User.Identity.Name);
 
             if (user != null)
             {
@@ -122,7 +122,7 @@ namespace Community_Factor.Controllers
 
         }
 
-        public static DataTable ToDataTable<Client>(List<Client> items)
+            public static DataTable ToDataTable<Client>(List<Client> items)
         {
             DataTable dataTable = new DataTable(typeof(Client).Name);
 
